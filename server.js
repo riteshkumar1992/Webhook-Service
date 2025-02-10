@@ -7,13 +7,18 @@
 
 import express from "express";
 import axios from "axios";
+import dotenv from "dotenv";
 
+dotenv.config();
 const app = express();
 app.use(express.json());
+//require("dotenv").config();
 
 const { WEBHOOK_VERIFY_TOKEN, GRAPH_API_TOKEN, PORT } = process.env;
+const port = PORT || 3000;
 
 app.post("/webhook", async (req, res) => {
+  console.log('GRAPH_API_TOKEN:', process.env.GRAPH_API_TOKEN);
   // log incoming messages
   console.log("Incoming webhook message:", JSON.stringify(req.body, null, 2));
 
@@ -60,6 +65,9 @@ app.post("/webhook", async (req, res) => {
   }
 
   res.sendStatus(200);
+});
+app.listen(process.env.PORT || 3000, () => {
+  console.log(`Server is running on port ${process.env.PORT || 3000}`);
 });
 
 // accepts GET requests at the /webhook endpoint. You need this URL to setup webhook initially.
